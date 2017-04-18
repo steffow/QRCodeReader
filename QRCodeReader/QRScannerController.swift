@@ -13,6 +13,7 @@ class QRScannerController: UIViewController, AVCaptureMetadataOutputObjectsDeleg
 
     @IBOutlet var messageLabel:UILabel!
     @IBOutlet var topbar: UIView!
+    @IBOutlet weak var EnterCode: UIButton!
     
     var captureSession:AVCaptureSession?
     var videoPreviewLayer:AVCaptureVideoPreviewLayer?
@@ -88,6 +89,9 @@ class QRScannerController: UIViewController, AVCaptureMetadataOutputObjectsDeleg
         // Dispose of any resources that can be recreated.
     }
     
+    @IBAction func SaveAction(_ sender: Any) {
+        print("Saving Data")
+    }
 
     // MARK: - AVCaptureMetadataOutputObjectsDelegate Methods
     
@@ -96,6 +100,7 @@ class QRScannerController: UIViewController, AVCaptureMetadataOutputObjectsDeleg
         // Check if the metadataObjects array is not nil and it contains at least one object.
         if metadataObjects == nil || metadataObjects.count == 0 {
             qrCodeFrameView?.frame = CGRect.zero
+            EnterCode.isHidden = true
             messageLabel.text = "No QR/barcode is detected"
             return
         }
@@ -111,6 +116,8 @@ class QRScannerController: UIViewController, AVCaptureMetadataOutputObjectsDeleg
             if metadataObj.stringValue != nil {
                 messageLabel.text = metadataObj.stringValue
             }
+            EnterCode.isHidden = false;
+            print("Type detected: " + metadataObj.type.description)
         }
     }
 
