@@ -16,11 +16,13 @@ class Purchase {
     var items: [JSON]
     
     init(iid: String) {
-        <#statements#>
+        self.iid = iid
+        self.items = []
     }
     
     init() {
         self.iid = "123"
+        self.items = []
     }
     
     func add(ean: String) {

@@ -22,15 +22,21 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Quick Scan" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gTu-vV-sCL">
-                                <rect key="frame" x="89" y="34" width="197" height="68.5"/>
-                                <fontDescription key="fontDescription" name="AvenirNextCondensed-Medium" family="Avenir Next Condensed" pointSize="50"/>
-                                <color key="textColor" red="0.1246470287" green="0.13028284909999999" blue="0.2254800498" alpha="1" colorSpace="calibratedRGB"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gTu-vV-sCL">
+                                <rect key="frame" x="85.5" y="34" width="205" height="68.5"/>
+                                <attributedString key="attributedText">
+                                    <fragment content="Quick Scan">
+                                        <attributes>
+                                            <color key="NSColor" red="0.99833557844161991" green="0.1853354594306082" blue="0.8065393464775964" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                            <font key="NSFont" size="50" name="AvenirNextCondensed-DemiBold"/>
+                                        </attributes>
+                                    </fragment>
+                                </attributedString>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="i2c-aZ-o7l">
                                 <rect key="frame" x="112.5" y="258.5" width="150" height="150"/>
-                                <color key="tintColor" red="0.99215686274509807" green="0.81568627450980391" blue="0.38039215686274508" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="tintColor" red="0.96396887302398682" green="0.37684252390296918" blue="0.79661963831920146" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 <state key="normal" image="focus"/>
                                 <connections>
                                     <segue destination="B0K-bi-dGX" kind="presentation" id="UT3-hf-w8E"/>
