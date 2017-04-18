@@ -13,7 +13,7 @@ class QRScannerController: UIViewController, AVCaptureMetadataOutputObjectsDeleg
 
     @IBOutlet var messageLabel:UILabel!
     @IBOutlet var topbar: UIView!
-    @IBOutlet weak var EnterCode: UIButton!
+    @IBOutlet var EnterCode: UIButton!
     
     var captureSession:AVCaptureSession?
     var videoPreviewLayer:AVCaptureVideoPreviewLayer?
@@ -35,7 +35,7 @@ class QRScannerController: UIViewController, AVCaptureMetadataOutputObjectsDeleg
 
         // Get an instance of the AVCaptureDevice class to initialize a device object and provide the video as the media type parameter.
         let captureDevice = AVCaptureDevice.defaultDevice(withMediaType: AVMediaTypeVideo)
-        
+        EnterCode.isHidden = true
         do {
             // Get an instance of the AVCaptureDeviceInput class using the previous device object.
             let input = try AVCaptureDeviceInput(device: captureDevice)
@@ -66,7 +66,7 @@ class QRScannerController: UIViewController, AVCaptureMetadataOutputObjectsDeleg
             // Move the message label and top bar to the front
             view.bringSubview(toFront: messageLabel)
             view.bringSubview(toFront: topbar)
-            
+            view.bringSubview(toFront: EnterCode)
             // Initialize QR Code Frame to highlight the QR code
             qrCodeFrameView = UIView()
             
