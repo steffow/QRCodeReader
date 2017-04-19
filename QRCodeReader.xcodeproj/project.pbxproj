@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		651D2F6C1EA7B57A00A78D3A /* UIApplication+TopViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 651D2F6B1EA7B57A00A78D3A /* UIApplication+TopViewController.swift */; };
 		944FED4E4B88419E0DBBAE3F /* Pods_QRCodeReader.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 022A50C9683B565130F84CCC /* Pods_QRCodeReader.framework */; };
 		AEBAEDFE1EA69AB2008A2DF0 /* Purchase.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEBAEDFD1EA69AB2008A2DF0 /* Purchase.swift */; };
 		F4F09DB71DAF669400026BB2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4F09DB61DAF669400026BB2 /* AppDelegate.swift */; };
@@ -20,6 +21,7 @@
 /* Begin PBXFileReference section */
 		022A50C9683B565130F84CCC /* Pods_QRCodeReader.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_QRCodeReader.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		436614E535F630583F8FD025 /* Pods-QRCodeReader.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-QRCodeReader.debug.xcconfig"; path = "Pods/Target Support Files/Pods-QRCodeReader/Pods-QRCodeReader.debug.xcconfig"; sourceTree = "<group>"; };
+		651D2F6B1EA7B57A00A78D3A /* UIApplication+TopViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIApplication+TopViewController.swift"; sourceTree = "<group>"; };
 		94D9BED4A40774EE63A603EB /* Pods-QRCodeReader.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-QRCodeReader.release.xcconfig"; path = "Pods/Target Support Files/Pods-QRCodeReader/Pods-QRCodeReader.release.xcconfig"; sourceTree = "<group>"; };
 		AEBAEDFD1EA69AB2008A2DF0 /* Purchase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Purchase.swift; sourceTree = "<group>"; };
 		F4F09DB31DAF669400026BB2 /* QRCodeReader.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = QRCodeReader.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -44,6 +46,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		651D2F6A1EA7B53300A78D3A /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				651D2F6B1EA7B57A00A78D3A /* UIApplication+TopViewController.swift */,
+			);
+			name = Extensions;
+			sourceTree = "<group>";
+		};
 		C2F7618A147A62E518172326 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -90,6 +100,7 @@
 				F4F09DC81DAF6A3800026BB2 /* QRCodeViewController.swift */,
 				F4F09DCA1DAF6A4F00026BB2 /* QRScannerController.swift */,
 				AEBAEDFD1EA69AB2008A2DF0 /* Purchase.swift */,
+				651D2F6A1EA7B53300A78D3A /* Extensions */,
 			);
 			path = QRCodeReader;
 			sourceTree = "<group>";
@@ -125,7 +136,7 @@
 			attributes = {
 				LastSwiftUpdateCheck = 0800;
 				LastUpgradeCheck = 0810;
-				ORGANIZATIONNAME = AppCoda;
+				ORGANIZATIONNAME = zimt.io;
 				TargetAttributes = {
 					F4F09DB21DAF669400026BB2 = {
 						CreatedOnToolsVersion = 8.0;
@@ -218,6 +229,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				651D2F6C1EA7B57A00A78D3A /* UIApplication+TopViewController.swift in Sources */,
 				AEBAEDFE1EA69AB2008A2DF0 /* Purchase.swift in Sources */,
 				F4F09DC91DAF6A3800026BB2 /* QRCodeViewController.swift in Sources */,
 				F4F09DB71DAF669400026BB2 /* AppDelegate.swift in Sources */,

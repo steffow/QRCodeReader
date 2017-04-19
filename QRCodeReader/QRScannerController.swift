@@ -18,6 +18,8 @@ class QRScannerController: UIViewController, AVCaptureMetadataOutputObjectsDeleg
     var captureSession:AVCaptureSession?
     var videoPreviewLayer:AVCaptureVideoPreviewLayer?
     var qrCodeFrameView:UIView?
+    var session = Purchase()
+    var scannedEAN:String?
     
     let supportedCodeTypes = [AVMetadataObjectTypeUPCECode,
                         AVMetadataObjectTypeCode39Code,
@@ -91,6 +93,12 @@ class QRScannerController: UIViewController, AVCaptureMetadataOutputObjectsDeleg
     
     @IBAction func SaveAction(_ sender: Any) {
         print("Saving Data")
+        session.add(ean: scannedEAN!)
+    }
+    
+    func displayLabel(msg: String){
+        messageLabel.text = msg
+        print(msg)
     }
 
     // MARK: - AVCaptureMetadataOutputObjectsDelegate Methods
@@ -114,10 +122,13 @@ class QRScannerController: UIViewController, AVCaptureMetadataOutputObjectsDeleg
             qrCodeFrameView?.frame = barCodeObject!.bounds
             
             if metadataObj.stringValue != nil {
-                messageLabel.text = metadataObj.stringValue
+                scannedEAN = metadataObj.stringValue
+                //messageLabel.text = metadataObj.stringValue
+                
             }
             EnterCode.isHidden = false;
-            print("Type detected: " + metadataObj.type.description)
+            //print("Type detected: " + metadataObj.type.description)
+            
         }
     }
 
