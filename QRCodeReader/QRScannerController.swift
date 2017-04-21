@@ -2,12 +2,13 @@
 //  QRScannerController.swift
 //  QRCodeReader
 //
-//  Created by Simon Ng on 13/10/2016.
-//  Copyright © 2016 AppCoda. All rights reserved.
+//  Based on code by Simon Ng, AppCoda
+//  Copyright © 2017 zimt.io. All rights reserved.
 //
 
 import UIKit
 import AVFoundation
+import SwiftyJSON
 
 class QRScannerController: UIViewController, AVCaptureMetadataOutputObjectsDelegate {
 
@@ -18,8 +19,10 @@ class QRScannerController: UIViewController, AVCaptureMetadataOutputObjectsDeleg
     var captureSession:AVCaptureSession?
     var videoPreviewLayer:AVCaptureVideoPreviewLayer?
     var qrCodeFrameView:UIView?
-    var session = Purchase()
+    var purchaseSession: Purchase?
     var scannedEAN:String?
+    var userKnown = false
+    var emmaUID: String?
     
     let supportedCodeTypes = [AVMetadataObjectTypeUPCECode,
                         AVMetadataObjectTypeCode39Code,
@@ -93,7 +96,7 @@ class QRScannerController: UIViewController, AVCaptureMetadataOutputObjectsDeleg
     
     @IBAction func SaveAction(_ sender: Any) {
         print("Saving Data")
-        session.add(ean: scannedEAN!)
+        //session.add(uid: emmaUID!, ean: scannedEAN!)
     }
     
     func displayLabel(msg: String){
@@ -102,6 +105,36 @@ class QRScannerController: UIViewController, AVCaptureMetadataOutputObjectsDeleg
     }
 
     // MARK: - AVCaptureMetadataOutputObjectsDelegate Methods
+    
+    func popupWarning(title: String, msg: String) {
+        let alertController = UIAlertController(title: title, message: msg, preferredStyle: UIAlertControllerStyle.alert) //Replace UIAlertControllerStyle.Alert by UIAlertControllerStyle.alert
+//        let DestructiveAction = UIAlertAction(title: title, style: UIAlertActionStyle.destructive) {
+//            (result : UIAlertAction) -> Void in
+//            print("Destructive")
+//        }
+        
+        // Replace UIAlertActionStyle.Default by UIAlertActionStyle.default
+        let okAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.default) {
+            (result : UIAlertAction) -> Void in
+            print("OK")
+        }
+        
+        //alertController.addAction(DestructiveAction)
+        alertController.addAction(okAction)
+        self.present(alertController, animated: true, completion: nil)
+    }
+    
+    func cb(val: Bool, resp: JSON) {
+        if val == false {
+            popupWarning(title: "Unknown User", msg: "User could not be found in Emma loyalty programme.")
+        } else {
+            emmaUID = resp["username"].description
+            messageLabel.text = "Customer is: " + emmaUID!
+            purchaseSession = Purchase(uid: emmaUID!)
+            userKnown = true
+            
+        }
+    }
     
     func captureOutput(_ captureOutput: AVCaptureOutput!, didOutputMetadataObjects metadataObjects: [Any]!, from connection: AVCaptureConnection!) {
         
@@ -121,12 +154,29 @@ class QRScannerController: UIViewController, AVCaptureMetadataOutputObjectsDeleg
             let barCodeObject = videoPreviewLayer?.transformedMetadataObject(for: metadataObj)
             qrCodeFrameView?.frame = barCodeObject!.bounds
             
-            if metadataObj.stringValue != nil {
-                scannedEAN = metadataObj.stringValue
-                //messageLabel.text = metadataObj.stringValue
+            if metadataObj.type.description == "org.iso.QRCode" && userKnown == false {
+                let scannedUserQR = metadataObj.stringValue
+                let id = Identity()
+                id.checkUserQR(scannedQR: scannedUserQR!, completion: cb)
+                
+                //session.add(ean: scannedEAN!)
+                
                 
             }
-            EnterCode.isHidden = false;
+            
+            if metadataObj.type.description == "org.iso.Code128" {
+                scannedEAN = metadataObj.stringValue
+                if !userKnown {
+                    popupWarning(title: "Unknown Customer", msg: "Please scan Emma loyalty ID first")
+                } else {
+                    messageLabel.text = scannedEAN
+                    purchaseSession?.add(ean: scannedEAN!)
+                    EnterCode.isHidden = false;
+
+                }
+                
+            }
+            
             //print("Type detected: " + metadataObj.type.description)
             
         }

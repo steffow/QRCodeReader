@@ -12,16 +12,16 @@ import SwiftyJSON
 
 class Purchase {
     
-    var iid: String
+    var uid: String
     var items: [JSON]
     
-    init(iid: String) {
-        self.iid = iid
+    init(uid: String) {
+        self.uid = uid
         self.items = []
     }
     
     init() {
-        self.iid = "123"
+        self.uid = "123"
         self.items = []
     }
     
@@ -32,6 +32,25 @@ class Purchase {
     func write(jsonResponse: JSON) {
         if let topController = UIApplication.topViewController() as? QRScannerController {
             topController.displayLabel(msg: jsonResponse[0]["item"].description)
+        }
+        let url = "http://node.zimt.io:4001/emma/api/v1/" + uid
+        let headers: HTTPHeaders = [:]
+        
+        let parameters: Parameters = [:]
+        
+        Alamofire.request(url, method: .get, parameters: parameters, headers: headers)
+            .responseJSON { response in
+                switch response.result {
+                case .success:
+                    //print("Success")
+                    let jsonAuthResp = response.result.value
+                    //print(response.result.value.debugDescription)
+                    let resp = JSON(jsonAuthResp!)
+                    //completion(resp)
+                //print(resp.description)
+                case .failure(let error):
+                    NSLog("GET Error: \(error)")
+                }
         }
         
     }
