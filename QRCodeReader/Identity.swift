@@ -33,6 +33,7 @@ class Identity {
                 let jsonAuthResp = response.result.value
                 let resp = JSON(jsonAuthResp!)
                 tokenId = resp["tokenId"].stringValue
+                TokenStore.tokenIdScanner = tokenId!
             case .failure(let error):
                 NSLog("GET Error: \(error)")
             }

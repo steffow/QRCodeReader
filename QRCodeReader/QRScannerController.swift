@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import AudioToolbox
 import AVFoundation
 import SwiftyJSON
 
@@ -107,11 +108,7 @@ class QRScannerController: UIViewController, AVCaptureMetadataOutputObjectsDeleg
     // MARK: - AVCaptureMetadataOutputObjectsDelegate Methods
     
     func popupWarning(title: String, msg: String) {
-        let alertController = UIAlertController(title: title, message: msg, preferredStyle: UIAlertControllerStyle.alert) //Replace UIAlertControllerStyle.Alert by UIAlertControllerStyle.alert
-//        let DestructiveAction = UIAlertAction(title: title, style: UIAlertActionStyle.destructive) {
-//            (result : UIAlertAction) -> Void in
-//            print("Destructive")
-//        }
+        let alertController = UIAlertController(title: title, message: msg, preferredStyle: UIAlertControllerStyle.alert)
         
         // Replace UIAlertActionStyle.Default by UIAlertActionStyle.default
         let okAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.default) {
@@ -124,6 +121,11 @@ class QRScannerController: UIViewController, AVCaptureMetadataOutputObjectsDeleg
         self.present(alertController, animated: true, completion: nil)
     }
     
+    private func beep() {
+        AudioServicesPlayAlertSound(SystemSoundID(1003))
+        AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
+    }
+    
     func cb(val: Bool, resp: JSON) {
         if val == false {
             popupWarning(title: "Unknown User", msg: "User could not be found in Emma loyalty programme.")
@@ -132,7 +134,7 @@ class QRScannerController: UIViewController, AVCaptureMetadataOutputObjectsDeleg
             messageLabel.text = "Customer is: " + emmaUID!
             purchaseSession = Purchase(uid: emmaUID!)
             userKnown = true
-            
+            beep()
         }
     }
     
@@ -169,7 +171,7 @@ class QRScannerController: UIViewController, AVCaptureMetadataOutputObjectsDeleg
                 if !userKnown {
                     popupWarning(title: "Unknown Customer", msg: "Please scan Emma loyalty ID first")
                 } else {
-                    messageLabel.text = scannedEAN
+                    //messageLabel.text = scannedEAN
                     purchaseSession?.add(ean: scannedEAN!)
                     EnterCode.isHidden = false;
 
