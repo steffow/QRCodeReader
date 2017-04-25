@@ -15,6 +15,7 @@ class Purchase {
     
     var uid: String
     var items: [JSON]
+    var notifyCompletion: ((Bool, JSON) -> ())?
     
     init(uid: String) {
         self.uid = uid
@@ -26,16 +27,32 @@ class Purchase {
         self.items = []
     }
     
-    func add(ean: String) {
-        getData(ean: ean, completion: write)
+    func add(ean: String, completion: @escaping (Bool, JSON) -> ()) {
+        getData(ean: ean, writeCompletion: writeDryRun, notifyCompletion: completion)
+        notifyCompletion = completion
+        // testing only
+        // completion(true, JSON({}))
     }
+    
+    func writeDryRun (jsonResponse: JSON) {
+        if jsonResponse[0].description != "null" {
+            // the != "null" should be replaced w proper error code
+            beep()
+            if let topController = UIApplication.topViewController() as? QRScannerController {
+                topController.displayLabel(msg: jsonResponse[0]["item"].description)
+            }
+            print("Simulating Saving Data: " + jsonResponse[0]["item"].description)
+            notifyCompletion!(true, JSON({}))
+        }
+    }
+    
     
     private func beep() {
         AudioServicesPlayAlertSound(SystemSoundID(1003))
         AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
     }
     
-    func write(jsonResponse: JSON) {
+    func write(jsonResponse: JSON, notifyCompletion: @escaping(Bool, JSON) -> ()) {
         if jsonResponse[0].description != "null" {
             // the != "null" should be replaced w proper error code
             beep()
@@ -70,7 +87,7 @@ class Purchase {
                         let jsonAuthResp = response.result.value
                         //print(response.result.value.debugDescription)
                         let resp = JSON(jsonAuthResp!)
-                        //completion(resp)
+                        notifyCompletion(true, resp)
                     //print(resp.description)
                     case .failure(let error):
                         NSLog("GET Error: \(error)")
@@ -82,7 +99,7 @@ class Purchase {
         
     }
     
-    private func getData(ean: String, completion: @escaping (JSON) -> ())  {
+    private func getData(ean: String, writeCompletion: @escaping (JSON) -> (), notifyCompletion: @escaping(Bool, JSON) -> ())  {
         let url = "http://brand.zimt.io:4002/emma/api/v1/products"
         let headers: HTTPHeaders = [:]
         
@@ -98,7 +115,7 @@ class Purchase {
                     let jsonAuthResp = response.result.value
                     //print(response.result.value.debugDescription)
                     let resp = JSON(jsonAuthResp!)
-                    completion(resp)
+                    writeCompletion(resp)
                     //print(resp.description)
                 case .failure(let error):
                     NSLog("GET Error: \(error)")

@@ -24,6 +24,8 @@ class QRScannerController: UIViewController, AVCaptureMetadataOutputObjectsDeleg
     var scannedEAN:String?
     var userKnown = false
     var emmaUID: String?
+    private var timer: Timer?
+    var scanningActive = true
     
     let supportedCodeTypes = [AVMetadataObjectTypeUPCECode,
                         AVMetadataObjectTypeCode39Code,
@@ -109,14 +111,10 @@ class QRScannerController: UIViewController, AVCaptureMetadataOutputObjectsDeleg
     
     func popupWarning(title: String, msg: String) {
         let alertController = UIAlertController(title: title, message: msg, preferredStyle: UIAlertControllerStyle.alert)
-        
-        // Replace UIAlertActionStyle.Default by UIAlertActionStyle.default
         let okAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.default) {
             (result : UIAlertAction) -> Void in
             print("OK")
         }
-        
-        //alertController.addAction(DestructiveAction)
         alertController.addAction(okAction)
         self.present(alertController, animated: true, completion: nil)
     }
@@ -126,7 +124,7 @@ class QRScannerController: UIViewController, AVCaptureMetadataOutputObjectsDeleg
         AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
     }
     
-    func cb(val: Bool, resp: JSON) {
+    func lookupUserCallback(val: Bool, resp: JSON) {
         if val == false {
             popupWarning(title: "Unknown User", msg: "User could not be found in Emma loyalty programme.")
         } else {
@@ -138,20 +136,36 @@ class QRScannerController: UIViewController, AVCaptureMetadataOutputObjectsDeleg
         }
     }
     
+    func lookupItemCallback(val: Bool, resp: JSON) {
+        if val == true {
+            beep() // Signal user that we're know this item
+            //videoPreviewLayer?.connection.isEnabled = false // Stop scanning to avoid multiple entries
+            scanningActive = false
+            print("STOP SCANNING")
+            DispatchQueue.main.async {
+                self.timer = Timer.scheduledTimer(withTimeInterval: 3, repeats: false) { timer in
+                    //self.videoPreviewLayer?.connection.isEnabled = true // Restart scanning
+                    self.scanningActive = true
+                    print("RESTART SCANNING")
+                }
+            }
+        }
+    }
+    
     func captureOutput(_ captureOutput: AVCaptureOutput!, didOutputMetadataObjects metadataObjects: [Any]!, from connection: AVCaptureConnection!) {
         
         // Check if the metadataObjects array is not nil and it contains at least one object.
-        if metadataObjects == nil || metadataObjects.count == 0 {
+        if (metadataObjects == nil || metadataObjects.count == 0){
             qrCodeFrameView?.frame = CGRect.zero
             EnterCode.isHidden = true
-            messageLabel.text = "No QR/barcode is detected"
+            if !userKnown { messageLabel.text = "No QR/barcode is detected" }
             return
         }
         
         // Get the metadata object.
         let metadataObj = metadataObjects[0] as! AVMetadataMachineReadableCodeObject
         
-        if supportedCodeTypes.contains(metadataObj.type) {
+        if supportedCodeTypes.contains(metadataObj.type) && scanningActive {
             // If the found metadata is equal to the QR code metadata then update the status label's text and set the bounds
             let barCodeObject = videoPreviewLayer?.transformedMetadataObject(for: metadataObj)
             qrCodeFrameView?.frame = barCodeObject!.bounds
@@ -159,11 +173,7 @@ class QRScannerController: UIViewController, AVCaptureMetadataOutputObjectsDeleg
             if metadataObj.type.description == "org.iso.QRCode" && userKnown == false {
                 let scannedUserQR = metadataObj.stringValue
                 let id = Identity()
-                id.checkUserQR(scannedQR: scannedUserQR!, completion: cb)
-                
-                //session.add(ean: scannedEAN!)
-                
-                
+                id.checkUserQR(scannedQR: scannedUserQR!, completion: lookupUserCallback)
             }
             
             if metadataObj.type.description == "org.iso.Code128" {
@@ -171,16 +181,12 @@ class QRScannerController: UIViewController, AVCaptureMetadataOutputObjectsDeleg
                 if !userKnown {
                     popupWarning(title: "Unknown Customer", msg: "Please scan Emma loyalty ID first")
                 } else {
-                    //messageLabel.text = scannedEAN
-                    purchaseSession?.add(ean: scannedEAN!)
+                    purchaseSession?.add(ean: scannedEAN!, completion: lookupItemCallback)
                     EnterCode.isHidden = false;
 
                 }
                 
             }
-            
-            //print("Type detected: " + metadataObj.type.description)
-            
         }
     }
 
