@@ -14,9 +14,14 @@ class Identity {
     
     static let username = "scanner"
     static let password = "password"
+    static let OAuthClientId = "scannerOA2Client"
+    static let OAuthClientSecret = "password"
+    static let openAMBaseURL =  "https://identity.zimt.io:443/openam"
     static let openAMauthNURL = "https://identity.zimt.io:443/openam/json/authenticate"
+    static let openAMOauth2AccesstokenURL = openAMBaseURL + "/oauth2/access_token"
     
     static var tokenId: String?
+    static var accessToken: String?
     
 
     static func getTokenID() {
@@ -40,8 +45,36 @@ class Identity {
         }
     }
     
-    func getOAuthToken() {
-        // try to get OAuth2 token with tokenId
+    static func getOAuthToken(){
+            var headers: HTTPHeaders = [:]
+            
+            let parameters: Parameters = [
+                "scope": "uid mail givenName",
+                "grant_type": "password",
+                "response_type": "token",
+                "username": Identity.username,
+                "password": Identity.password,
+                ]
+            
+            if let authorizationHeader = Request.authorizationHeader(user: Identity.OAuthClientId, password: Identity.OAuthClientSecret) {
+                headers[authorizationHeader.key] = authorizationHeader.value
+            }
+            
+            Alamofire.request(Identity.openAMOauth2AccesstokenURL, method: .post, parameters: parameters)
+                .responseJSON { response in
+                    switch response.result {
+                    case .success:
+                        let jsonAuthResp = response.result.value
+                        let resp = JSON(jsonAuthResp!)
+                        let token = resp["access_token"].stringValue
+                        //print("In Code Sender:" + resp["access_token"].stringValue);
+                        Identity.accessToken = token
+                    case .failure(let error):
+                        NSLog("GET Error: \(error)")
+                    }
+            }
+            
+        
     }
 
     func checkUserQR(scannedQR: String, completion: @escaping (Bool, JSON) -> ()) {

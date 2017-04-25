@@ -119,8 +119,9 @@ class QRScannerController: UIViewController, AVCaptureMetadataOutputObjectsDeleg
         self.present(alertController, animated: true, completion: nil)
     }
     
-    private func beep() {
-        AudioServicesPlayAlertSound(SystemSoundID(1003))
+    private func signalValidEntityBeep() {
+        // issued when a valid user or valid stock EAN code is detected
+        AudioServicesPlayAlertSound(SystemSoundID(1256))
         AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
     }
     
@@ -132,13 +133,13 @@ class QRScannerController: UIViewController, AVCaptureMetadataOutputObjectsDeleg
             messageLabel.text = "Customer is: " + emmaUID!
             purchaseSession = Purchase(uid: emmaUID!)
             userKnown = true
-            beep()
+            signalValidEntityBeep()
         }
     }
     
     func lookupItemCallback(val: Bool, resp: JSON) {
         if val == true {
-            beep() // Signal user that we're know this item
+            signalValidEntityBeep() // Signal user that we're know this item
             //videoPreviewLayer?.connection.isEnabled = false // Stop scanning to avoid multiple entries
             scanningActive = false
             print("STOP SCANNING")
