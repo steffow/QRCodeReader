@@ -30,7 +30,7 @@ class Purchase {
     func add(ean: String, completion: @escaping (Bool, JSON) -> ()) {
         // global param is ugly, but now idea on how use escaping closure as param
         notifyCompletion = completion
-        getData(ean: ean, writeCompletion: writeDryRun, notifyCompletion: completion)
+        getData(ean: ean, writeCompletion: write, notifyCompletion: completion)
         
         
     }
@@ -54,10 +54,11 @@ class Purchase {
         AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
     }
     
-    func write(jsonResponse: JSON, notifyCompletion: @escaping(Bool, JSON) -> ()) {
+    func write(jsonResponse: JSON) {
         if jsonResponse[0].description != "null" {
             // the != "null" should be replaced w proper error code
-            notifyCompletion(false, jsonResponse)
+            notifyCompletion!(false, jsonResponse)
+            print("Product Record is NULL")
             return
         }
         
@@ -94,7 +95,7 @@ class Purchase {
                     let jsonAuthResp = response.result.value
                     //print(response.result.value.debugDescription)
                     let resp = JSON(jsonAuthResp!)
-                    notifyCompletion(true, resp)
+                    self.notifyCompletion!(true, resp)
                 //print(resp.description)
                 case .failure(let error):
                     NSLog("GET Error: \(error)")
@@ -112,12 +113,12 @@ class Purchase {
         let parameters: Parameters = [
             "code": "\"" + ean + "\""
         ]
-        
+        print("Getting product name for: " + ean)
         Alamofire.request(url, method: .get, parameters: parameters, headers: headers)
             .responseJSON { response in
                 switch response.result {
                 case .success:
-                    //print("Success")
+                    print("Got Product Name")
                     let jsonAuthResp = response.result.value
                     //print(response.result.value.debugDescription)
                     let resp = JSON(jsonAuthResp!)

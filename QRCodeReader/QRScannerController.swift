@@ -137,6 +137,17 @@ class QRScannerController: UIViewController, AVCaptureMetadataOutputObjectsDeleg
         }
     }
     
+    func pauseScanning(duration: Int) {
+        scanningActive = false
+        DispatchQueue.main.async {
+            self.timer = Timer.scheduledTimer(withTimeInterval: TimeInterval(duration), repeats: false) { timer in
+                //self.videoPreviewLayer?.connection.isEnabled = true // Restart scanning
+                self.scanningActive = true
+                print("RESTART SCANNING")
+            }
+        }
+    }
+    
     func lookupItemCallback(val: Bool, resp: JSON) {
         if val == true {
             signalValidEntityBeep() // Signal user that we're know this item
@@ -182,6 +193,7 @@ class QRScannerController: UIViewController, AVCaptureMetadataOutputObjectsDeleg
                 if !userKnown {
                     popupWarning(title: "Unknown Customer", msg: "Please scan Emma loyalty ID first")
                 } else {
+                    pauseScanning(duration: 2)
                     purchaseSession?.add(ean: scannedEAN!, completion: lookupItemCallback)
                     EnterCode.isHidden = false;
 
