@@ -56,7 +56,7 @@ class Identity {
     //
     // ------------------------------
     
-    static func sendPollRequest(response: JSON) {
+    static func sendPollRequest(response: JSON, refreshOAuthAccessTkn: Bool) {
         let params = response.dictionaryObject
         
         let headers: HTTPHeaders = [
@@ -73,8 +73,13 @@ class Identity {
                 if let _ = resp["tokenId"].string {
                     tokenId = resp["tokenId"].stringValue
                     TokenStore.tokenIdScanner = tokenId!
+                    self.timer?.invalidate()
+                    if refreshOAuthAccessTkn {
+                        self.getOAuthToken()
+                    }
                 } else {
-                    self.pushPoll(response: resp, duration: 3)
+                    //self.pushPoll(response: resp, duration: 4)
+                    print("Next Poll round: " + (self.timer?.timeInterval.debugDescription)!)
                 }
             case .failure(let error):
                 NSLog("GET Error: \(error)")
@@ -83,12 +88,10 @@ class Identity {
     }
     
     static func pushPoll(response: JSON, duration: Int) {
-        DispatchQueue.main.async {
-            self.timer = Timer.scheduledTimer(withTimeInterval: TimeInterval(duration), repeats: false) { timer in
-                sendPollRequest(response: response)
-            }
+        print("Dispatching")
+        self.timer = Timer.scheduledTimer(withTimeInterval: 3, repeats: true) { timer in
+            Identity.sendPollRequest(response: response, refreshOAuthAccessTkn: true)
         }
-        
     }
     
     static func pushLogin(username: String) {
@@ -141,6 +144,7 @@ class Identity {
                         let resp = JSON(jsonAuthResp!)
                         let token = resp["access_token"].stringValue
                         Identity.accessToken = token
+                        print("AccTkn: " + token)
                     case .failure(let error):
                         NSLog("GET Error: \(error)")
                     }
@@ -151,7 +155,8 @@ class Identity {
     
     // ------------------------------
     //
-    // Other stuff
+    // Let's check if there is an active user 
+    // with that QR code URL
     //
     // ------------------------------
 
@@ -176,6 +181,7 @@ class Identity {
                 case .success:
                     let jsonAuthResp = response.result.value
                     let resp = JSON(jsonAuthResp!)
+                    //print("Validating User " + resp.stringValue)
                     completion(true, resp)
                 case .failure(let error):
                     NSLog("GET Error: \(error)")

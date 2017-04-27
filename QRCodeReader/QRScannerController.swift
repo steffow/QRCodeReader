@@ -99,6 +99,10 @@ class QRScannerController: UIViewController, AVCaptureMetadataOutputObjectsDeleg
     
     @IBAction func SaveAction(_ sender: Any) {
         print("Saving Data")
+        userKnown = false;
+        EnterCode.isHidden = true
+        popupWarning(title: "Done.", msg: "User successfully checked out.")
+        displayLabel(msg: "Next customer: scan loyalty card.")
         //session.add(uid: emmaUID!, ean: scannedEAN!)
     }
     
@@ -169,8 +173,10 @@ class QRScannerController: UIViewController, AVCaptureMetadataOutputObjectsDeleg
         // Check if the metadataObjects array is not nil and it contains at least one object.
         if (metadataObjects == nil || metadataObjects.count == 0){
             qrCodeFrameView?.frame = CGRect.zero
-            EnterCode.isHidden = true
-            if !userKnown { messageLabel.text = "No QR/barcode is detected" }
+            //EnterCode.isHidden = true
+            if !userKnown {
+                messageLabel.text = "Please scan loyalty card first."
+            }
             return
         }
         
