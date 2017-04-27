@@ -85,9 +85,6 @@ class Purchase {
                 "Content-Type": "application/json"
             ]
         
-        print("AccTkn: " + Identity.accessToken!)
-        print("Body: " + purchase.description)
-        
         Alamofire.request(url, method: .post, parameters: purchase, encoding: JSONEncoding.default, headers: headers)
             .responseJSON { response in
                 switch response.result {
