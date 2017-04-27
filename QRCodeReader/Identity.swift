@@ -20,9 +20,12 @@ class Identity {
     static let openAMBaseURL =  "https://identity.zimt.io:443/openam"
     static let openAMauthNURL = "https://identity.zimt.io:443/openam/json/authenticate"
     static let openAMOauth2AccesstokenURL = openAMBaseURL + "/oauth2/access_token"
+    static let openAMPushAuthURL = openAMBaseURL + "/json/authenticate?authIndexType=service&authIndexValue=pushAuth"
     
     static var tokenId: String?
     static var accessToken: String?
+    
+    private static var timer: Timer?
     
 
     static func getTokenID() {
@@ -45,6 +48,74 @@ class Identity {
             }
         }
     }
+    
+    
+    // ------------------------------
+    //
+    // Some stuff for PushAuth
+    //
+    // ------------------------------
+    
+    static func sendPollRequest(response: JSON) {
+        let params = response.dictionaryObject
+        
+        let headers: HTTPHeaders = [
+            "X-OpenAM-Username": username,
+            "Content-Type": "application/json",
+            "Accept-API-Version": "resource=2.0, protocol=1.0"
+        ]
+        
+        Alamofire.request(openAMPushAuthURL, method: .post, parameters: params, encoding: JSONEncoding.default, headers: headers).responseJSON { response in
+            switch response.result {
+            case .success:
+                let jsonAuthResp = response.result.value
+                let resp = JSON(jsonAuthResp!)
+                if let _ = resp["tokenId"].string {
+                    tokenId = resp["tokenId"].stringValue
+                    TokenStore.tokenIdScanner = tokenId!
+                } else {
+                    self.pushPoll(response: resp, duration: 3)
+                }
+            case .failure(let error):
+                NSLog("GET Error: \(error)")
+            }
+        }
+    }
+    
+    static func pushPoll(response: JSON, duration: Int) {
+        DispatchQueue.main.async {
+            self.timer = Timer.scheduledTimer(withTimeInterval: TimeInterval(duration), repeats: false) { timer in
+                sendPollRequest(response: response)
+            }
+        }
+        
+    }
+    
+    static func pushLogin(username: String) {
+        let headers: HTTPHeaders = [
+            "X-OpenAM-Username": username,
+            "Content-Type": "application/json",
+            "Accept-API-Version": "resource=2.0, protocol=1.0"
+        ]
+        
+        Alamofire.request(openAMPushAuthURL, method: .post, headers: headers).responseJSON { response in
+            switch response.result {
+            case .success:
+                let jsonAuthResp = response.result.value
+                let resp = JSON(jsonAuthResp!)
+                self.pushPoll(response: resp, duration: 3)
+            case .failure(let error):
+                NSLog("GET Error: \(error)")
+            }
+        }
+
+    }
+    
+    // ------------------------------
+    //
+    // OAuth2 Section
+    //
+    // ------------------------------
     
     static func getOAuthToken(){
             var headers: HTTPHeaders = [:]
@@ -69,7 +140,6 @@ class Identity {
                         let jsonAuthResp = response.result.value
                         let resp = JSON(jsonAuthResp!)
                         let token = resp["access_token"].stringValue
-                        print("In getOAuthToken:" + resp.description);
                         Identity.accessToken = token
                     case .failure(let error):
                         NSLog("GET Error: \(error)")
@@ -78,6 +148,12 @@ class Identity {
             
         
     }
+    
+    // ------------------------------
+    //
+    // Other stuff
+    //
+    // ------------------------------
 
     func checkUserQR(scannedQR: String, completion: @escaping (Bool, JSON) -> ()) {
         let url = scannedQR
