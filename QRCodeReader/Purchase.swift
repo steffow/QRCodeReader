@@ -36,7 +36,8 @@ class Purchase {
     }
     
     func writeDryRun (jsonResponse: JSON) {
-        if jsonResponse[0].description != "null" {
+        
+        if (jsonResponse.null != nil) {
             // the != "null" should be replaced w proper error code
             gotCodeBeep()
             if let topController = UIApplication.topViewController() as? QRScannerController {
@@ -55,7 +56,8 @@ class Purchase {
     }
     
     func write(jsonResponse: JSON) {
-        if jsonResponse[0].description != "null" {
+        //print("Writing... " + jsonResponse.description)
+        if (jsonResponse.null != nil) {
             // the != "null" should be replaced w proper error code
             notifyCompletion!(false, jsonResponse)
             print("Product Record is NULL")
@@ -68,26 +70,25 @@ class Purchase {
             topController.displayLabel(msg: jsonResponse[0]["item"].description)
         }
         print("Saving Data")
-        let url = "http://node.zimt.io:4001/scanner/api/v1/" + uid
-        let purchase = [
-            "item": jsonResponse["item"],
-            "code": jsonResponse["code"],
-            "price": jsonResponse["price"],
+        let url = "http://node.zimt.io:8080/scanner/api/v1/" + uid
+        let purchase: [String: Any]  = [
+            "item": jsonResponse[0]["item"].stringValue,
+            "code": jsonResponse[0]["code"].stringValue,
+            "price": jsonResponse[0]["price"].stringValue,
             "identity": uid
-            ] as [String : Any]
-        let headers: HTTPHeaders = [:]
-        let iPlanetDirectoryPro = [
-            HTTPCookiePropertyKey.name: "iPlanetDirectoryPro",
-            HTTPCookiePropertyKey.value: Identity.tokenId,
-            HTTPCookiePropertyKey.domain: ".zimt.io",
-            HTTPCookiePropertyKey.path: "/"
         ]
-        let iPlanetDirectoryProCookie = HTTPCookie.init(properties: iPlanetDirectoryPro as Any as! [HTTPCookiePropertyKey : Any])
-        Alamofire.SessionManager.default.session.configuration.httpCookieStorage?.setCookie(iPlanetDirectoryProCookie!)
         
-        let parameters: Parameters = [:]
+
+            let headers: HTTPHeaders = [
+                "Authorization": "Bearer " + Identity.accessToken!,
+                //"Accept": "application/json",
+                "Content-Type": "application/json"
+            ]
         
-        Alamofire.request(url, method: .post, parameters: purchase, encoding: URLEncoding.httpBody)
+        print("AccTkn: " + Identity.accessToken!)
+        print("Body: " + purchase.description)
+        
+        Alamofire.request(url, method: .post, parameters: purchase, encoding: JSONEncoding.default, headers: headers)
             .responseJSON { response in
                 switch response.result {
                 case .success:
@@ -98,7 +99,7 @@ class Purchase {
                     self.notifyCompletion!(true, resp)
                 //print(resp.description)
                 case .failure(let error):
-                    NSLog("GET Error: \(error)")
+                    NSLog("POST Error: \(error)")
                 }
         }
         
@@ -120,8 +121,9 @@ class Purchase {
                 case .success:
                     print("Got Product Name")
                     let jsonAuthResp = response.result.value
-                    //print(response.result.value.debugDescription)
+                    
                     let resp = JSON(jsonAuthResp!)
+                    //print("Data from EAN Backend" + resp[0].description)
                     writeCompletion(resp)
                 //print(resp.description)
                 case .failure(let error):

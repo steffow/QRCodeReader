@@ -14,7 +14,8 @@ class Identity {
     
     static let username = "scanner"
     static let password = "password"
-    static let OAuthClientId = "scannerOA2Client"
+    //static let OAuthClientId = "scannerOA2Client"
+    static let OAuthClientId = "oidc"
     static let OAuthClientSecret = "password"
     static let openAMBaseURL =  "https://identity.zimt.io:443/openam"
     static let openAMauthNURL = "https://identity.zimt.io:443/openam/json/authenticate"
@@ -49,7 +50,7 @@ class Identity {
             var headers: HTTPHeaders = [:]
             
             let parameters: Parameters = [
-                "scope": "uid mail givenName",
+                "scope": "uid",
                 "grant_type": "password",
                 "response_type": "token",
                 "username": Identity.username,
@@ -58,16 +59,17 @@ class Identity {
             
             if let authorizationHeader = Request.authorizationHeader(user: Identity.OAuthClientId, password: Identity.OAuthClientSecret) {
                 headers[authorizationHeader.key] = authorizationHeader.value
+                print("Headers: " + headers.description)
             }
             
-            Alamofire.request(Identity.openAMOauth2AccesstokenURL, method: .post, parameters: parameters)
+            Alamofire.request(Identity.openAMOauth2AccesstokenURL, method: .post, parameters: parameters, headers: headers)
                 .responseJSON { response in
                     switch response.result {
                     case .success:
                         let jsonAuthResp = response.result.value
                         let resp = JSON(jsonAuthResp!)
                         let token = resp["access_token"].stringValue
-                        //print("In Code Sender:" + resp["access_token"].stringValue);
+                        print("In getOAuthToken:" + resp.description);
                         Identity.accessToken = token
                     case .failure(let error):
                         NSLog("GET Error: \(error)")
