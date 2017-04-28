@@ -194,7 +194,7 @@ class QRScannerController: UIViewController, AVCaptureMetadataOutputObjectsDeleg
                 id.checkUserQR(scannedQR: scannedUserQR!, completion: lookupUserCallback)
             }
             
-            if metadataObj.type.description == "org.iso.Code128" {
+            if metadataObj.type.description == "org.iso.Code128" || metadataObj.type.description == "org.gs1.EAN-13" {
                 scannedEAN = metadataObj.stringValue
                 if !userKnown {
                     popupWarning(title: "Unknown Customer", msg: "Please scan Emma loyalty ID first")
@@ -205,7 +205,11 @@ class QRScannerController: UIViewController, AVCaptureMetadataOutputObjectsDeleg
 
                 }
                 
+            } else {
+                //print("Cannot handle type: " + metadataObj.type.description)
             }
+            
+            
         }
     }
 
