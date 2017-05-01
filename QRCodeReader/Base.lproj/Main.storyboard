@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12118" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12120" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12086"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -22,38 +23,48 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gTu-vV-sCL">
-                                <rect key="frame" x="85.5" y="34" width="205" height="68.5"/>
-                                <attributedString key="attributedText">
-                                    <fragment content="Quick Scan">
-                                        <attributes>
-                                            <color key="NSColor" red="0.99833557844161991" green="0.1853354594306082" blue="0.8065393464775964" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                            <font key="NSFont" size="50" name="AvenirNextCondensed-DemiBold"/>
-                                        </attributes>
-                                    </fragment>
-                                </attributedString>
-                                <nil key="highlightedColor"/>
-                            </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="i2c-aZ-o7l">
-                                <rect key="frame" x="112.5" y="258.5" width="150" height="150"/>
-                                <color key="tintColor" red="0.96396887302398682" green="0.37684252390296918" blue="0.79661963831920146" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                <rect key="frame" x="113" y="259" width="150" height="150"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="i2c-aZ-o7l" secondAttribute="height" multiplier="1:1" id="sgs-hD-xEg"/>
+                                </constraints>
+                                <color key="tintColor" red="0.63921568627450975" green="0.14901960784313725" blue="0.8666666666666667" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 <state key="normal" image="focus"/>
                                 <connections>
                                     <segue destination="B0K-bi-dGX" kind="presentation" id="UT3-hf-w8E"/>
                                 </connections>
                             </button>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Tokyo" translatesAutoresizingMaskIntoConstraints="NO" id="pNc-uE-fBg">
+                                <rect key="frame" x="115" y="52" width="148" height="79"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="pNc-uE-fBg" secondAttribute="height" multiplier="15:8" id="Pl5-ci-9fG"/>
+                                    <constraint firstAttribute="width" secondItem="pNc-uE-fBg" secondAttribute="height" multiplier="148:79" id="uVZ-i6-Obf"/>
+                                </constraints>
+                            </imageView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Supermarket" translatesAutoresizingMaskIntoConstraints="NO" id="FWm-Mu-Zqw">
+                                <rect key="frame" x="80" y="506" width="218" height="66"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="FWm-Mu-Zqw" secondAttribute="height" multiplier="109:33" id="M9X-nv-t5a"/>
+                                </constraints>
+                            </imageView>
                         </subviews>
-                        <color key="backgroundColor" red="0.35689863700000002" green="0.83207048510000003" blue="0.99566137789999998" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                        <color key="backgroundColor" red="0.31127257407482994" green="0.81495738986190491" blue="0.5547068710972789" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                         <constraints>
                             <constraint firstItem="i2c-aZ-o7l" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="45F-Jb-Ypr"/>
                             <constraint firstItem="i2c-aZ-o7l" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="9gq-Qq-yWl"/>
-                            <constraint firstItem="gTu-vV-sCL" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="14" id="Kbm-oQ-BFb"/>
-                            <constraint firstItem="gTu-vV-sCL" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="c9Z-Rj-xhG"/>
+                            <constraint firstItem="pNc-uE-fBg" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="99" id="HfU-Mu-2cK"/>
+                            <constraint firstItem="pNc-uE-fBg" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" constant="1.5" id="aFh-aU-DXt"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="FWm-Mu-Zqw" secondAttribute="bottom" constant="95" id="e3r-le-0Wi"/>
+                            <constraint firstItem="pNc-uE-fBg" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="32" id="hO9-1i-C08"/>
+                            <constraint firstItem="FWm-Mu-Zqw" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="64" id="qBw-LE-L7p"/>
+                            <constraint firstItem="FWm-Mu-Zqw" firstAttribute="top" secondItem="i2c-aZ-o7l" secondAttribute="bottom" constant="97" id="shA-1n-fdY"/>
+                            <constraint firstItem="FWm-Mu-Zqw" firstAttribute="centerX" secondItem="pNc-uE-fBg" secondAttribute="centerX" id="uR1-au-xhI"/>
                         </constraints>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
+            <point key="canvasLocation" x="32.799999999999997" y="78.710644677661179"/>
         </scene>
         <!--Scanner Controller-->
         <scene sceneID="6su-PY-OE1">
@@ -146,6 +157,8 @@
     </scenes>
     <resources>
         <image name="SaveBtn" width="76" height="76"/>
+        <image name="Supermarket" width="768" height="232"/>
+        <image name="Tokyo" width="1000" height="640"/>
         <image name="cross" width="40" height="40"/>
         <image name="focus" width="150" height="150"/>
     </resources>
