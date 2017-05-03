@@ -2,17 +2,17 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "SaveBtn.png",
+      "filename" : "Rock.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
-      "filename" : "SaveBtn-1.png",
+      "filename" : "Rock-1.png",
       "scale" : "2x"
     },
     {
       "idiom" : "universal",
-      "filename" : "SaveBtn-2.png",
+      "filename" : "Rock-2.png",
       "scale" : "3x"
     }
   ],

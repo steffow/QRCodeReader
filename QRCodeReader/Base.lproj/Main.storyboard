@@ -34,7 +34,7 @@
                                     <segue destination="B0K-bi-dGX" kind="presentation" id="UT3-hf-w8E"/>
                                 </connections>
                             </button>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Tokyo" translatesAutoresizingMaskIntoConstraints="NO" id="pNc-uE-fBg">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Stairway" translatesAutoresizingMaskIntoConstraints="NO" id="pNc-uE-fBg">
                                 <rect key="frame" x="115" y="52" width="148" height="79"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="pNc-uE-fBg" secondAttribute="height" multiplier="15:8" id="Pl5-ci-9fG"/>
@@ -130,6 +130,13 @@
                                     <action selector="SaveAction:" destination="B0K-bi-dGX" eventType="touchUpInside" id="e7E-AQ-Z9G"/>
                                 </connections>
                             </button>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Rock" translatesAutoresizingMaskIntoConstraints="NO" id="CBa-AA-ZZ6">
+                                <rect key="frame" x="116" y="238" width="142" height="190"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="142" id="7Qb-Ya-2fy"/>
+                                    <constraint firstAttribute="width" secondItem="CBa-AA-ZZ6" secondAttribute="height" multiplier="71:95" id="k95-Yl-pAv"/>
+                                </constraints>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -137,14 +144,18 @@
                             <constraint firstItem="96P-Wq-Qjr" firstAttribute="centerX" secondItem="AAl-zJ-uU4" secondAttribute="centerX" id="6HF-vt-vvU"/>
                             <constraint firstAttribute="trailing" secondItem="qba-q7-QE8" secondAttribute="trailing" id="EDr-TR-bKK"/>
                             <constraint firstItem="AAl-zJ-uU4" firstAttribute="top" secondItem="96P-Wq-Qjr" secondAttribute="bottom" constant="43" id="G7w-E1-Wox"/>
+                            <constraint firstItem="CBa-AA-ZZ6" firstAttribute="centerY" secondItem="xpT-9d-mEX" secondAttribute="centerY" id="PHj-er-J0a"/>
+                            <constraint firstItem="CBa-AA-ZZ6" firstAttribute="centerX" secondItem="96P-Wq-Qjr" secondAttribute="centerX" id="ZPd-KL-peZ"/>
                             <constraint firstItem="AAl-zJ-uU4" firstAttribute="leading" secondItem="qba-q7-QE8" secondAttribute="leading" id="ZSr-W3-1Wg"/>
                             <constraint firstItem="AAl-zJ-uU4" firstAttribute="bottom" secondItem="irj-0H-Q0u" secondAttribute="top" id="mRr-FV-xUe"/>
                             <constraint firstItem="qba-q7-QE8" firstAttribute="leading" secondItem="xpT-9d-mEX" secondAttribute="leading" id="qUW-zf-frg"/>
+                            <constraint firstItem="96P-Wq-Qjr" firstAttribute="top" secondItem="CBa-AA-ZZ6" secondAttribute="bottom" constant="80" id="wQy-9l-OhR"/>
                             <constraint firstItem="AAl-zJ-uU4" firstAttribute="trailing" secondItem="qba-q7-QE8" secondAttribute="trailing" id="y5v-e4-uet"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="EnterCode" destination="96P-Wq-Qjr" id="2ce-pM-Zw4"/>
+                        <outlet property="GotFocusIcn" destination="CBa-AA-ZZ6" id="Xq5-hT-Rpz"/>
                         <outlet property="messageLabel" destination="AAl-zJ-uU4" id="2vr-bb-KNQ"/>
                         <outlet property="topbar" destination="qba-q7-QE8" id="mW8-Pp-n7N"/>
                     </connections>
@@ -156,9 +167,10 @@
         </scene>
     </scenes>
     <resources>
+        <image name="Rock" width="567" height="768"/>
         <image name="SaveBtn" width="76" height="76"/>
+        <image name="Stairway" width="768" height="391"/>
         <image name="Supermarket" width="768" height="232"/>
-        <image name="Tokyo" width="1000" height="640"/>
         <image name="cross" width="40" height="40"/>
         <image name="focus" width="150" height="150"/>
     </resources>

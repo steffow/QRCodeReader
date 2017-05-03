@@ -16,6 +16,7 @@ class QRScannerController: UIViewController, AVCaptureMetadataOutputObjectsDeleg
     @IBOutlet var messageLabel:UILabel!
     @IBOutlet var topbar: UIView!
     @IBOutlet var EnterCode: UIButton!
+    @IBOutlet weak var GotFocusIcn: UIImageView!
     
     var captureSession:AVCaptureSession?
     var videoPreviewLayer:AVCaptureVideoPreviewLayer?
@@ -75,6 +76,7 @@ class QRScannerController: UIViewController, AVCaptureMetadataOutputObjectsDeleg
             view.bringSubview(toFront: messageLabel)
             view.bringSubview(toFront: topbar)
             view.bringSubview(toFront: EnterCode)
+            view.bringSubview(toFront: GotFocusIcn)
             // Initialize QR Code Frame to highlight the QR code
             qrCodeFrameView = UIView()
             
@@ -90,6 +92,10 @@ class QRScannerController: UIViewController, AVCaptureMetadataOutputObjectsDeleg
             print(error)
             return
         }
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        GotFocusIcn.isHidden = true;
     }
 
     override func didReceiveMemoryWarning() {
@@ -130,6 +136,7 @@ class QRScannerController: UIViewController, AVCaptureMetadataOutputObjectsDeleg
     }
     
     func lookupUserCallback(val: Bool, resp: JSON) {
+        self.GotFocusIcn.isHidden = true
         if val == false {
             popupWarning(title: "Unknown User", msg: "User could not be found in Emma loyalty programme.")
         } else {
@@ -147,6 +154,7 @@ class QRScannerController: UIViewController, AVCaptureMetadataOutputObjectsDeleg
             self.timer = Timer.scheduledTimer(withTimeInterval: TimeInterval(duration), repeats: false) { timer in
                 //self.videoPreviewLayer?.connection.isEnabled = true // Restart scanning
                 self.scanningActive = true
+                self.GotFocusIcn.isHidden = true
                 print("RESTART SCANNING")
             }
         }
@@ -162,6 +170,7 @@ class QRScannerController: UIViewController, AVCaptureMetadataOutputObjectsDeleg
                 self.timer = Timer.scheduledTimer(withTimeInterval: 3, repeats: false) { timer in
                     //self.videoPreviewLayer?.connection.isEnabled = true // Restart scanning
                     self.scanningActive = true
+                    self.GotFocusIcn.isHidden = true
                     print("RESTART SCANNING")
                 }
             }
@@ -191,14 +200,17 @@ class QRScannerController: UIViewController, AVCaptureMetadataOutputObjectsDeleg
             if metadataObj.type.description == "org.iso.QRCode" && userKnown == false {
                 let scannedUserQR = metadataObj.stringValue
                 let id = Identity()
+                GotFocusIcn.isHidden = false
                 id.checkUserQR(scannedQR: scannedUserQR!, completion: lookupUserCallback)
             }
             
             if metadataObj.type.description == "org.iso.Code128" || metadataObj.type.description == "org.gs1.EAN-13" {
                 scannedEAN = metadataObj.stringValue
+                
                 if !userKnown {
                     popupWarning(title: "Unknown Customer", msg: "Please scan Emma loyalty ID first")
                 } else {
+                    GotFocusIcn.isHidden = false
                     pauseScanning(duration: 2)
                     purchaseSession?.add(ean: scannedEAN!, completion: lookupItemCallback)
                     EnterCode.isHidden = false;
