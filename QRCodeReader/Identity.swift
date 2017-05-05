@@ -12,7 +12,8 @@ import SwiftyJSON
 
 class Identity {
     
-    static let username = "scanner"
+    //static let username = "scanner"
+    static var username: String?
     static let password = "password"
     //static let OAuthClientId = "scannerOA2Client"
     static let OAuthClientId = "oidc"
@@ -27,10 +28,12 @@ class Identity {
     
     private static var timer: Timer?
     
-
+    static func setUsername(name: String) {
+        username = name
+    }
     static func getTokenID() {
         let headers: HTTPHeaders = [
-            "X-OpenAM-Username": username,
+            "X-OpenAM-Username": username!,
             "X-OpenAM-Password": password,
             "Content-Type": "application/json",
             "Accept-API-Version": "resource=2.0, protocol=1.0"
@@ -60,7 +63,7 @@ class Identity {
         let params = response.dictionaryObject
         
         let headers: HTTPHeaders = [
-            "X-OpenAM-Username": username,
+            "X-OpenAM-Username": username!,
             "Content-Type": "application/json",
             "Accept-API-Version": "resource=2.0, protocol=1.0"
         ]

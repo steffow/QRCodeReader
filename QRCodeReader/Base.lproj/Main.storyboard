@@ -7,7 +7,6 @@
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
-        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -23,43 +22,25 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="i2c-aZ-o7l">
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="i2c-aZ-o7l">
                                 <rect key="frame" x="113" y="259" width="150" height="150"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" secondItem="i2c-aZ-o7l" secondAttribute="height" multiplier="1:1" id="sgs-hD-xEg"/>
-                                </constraints>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="tintColor" red="0.63921568627450975" green="0.14901960784313725" blue="0.8666666666666667" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 <state key="normal" image="focus"/>
                                 <connections>
                                     <segue destination="B0K-bi-dGX" kind="presentation" id="UT3-hf-w8E"/>
                                 </connections>
                             </button>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Stairway" translatesAutoresizingMaskIntoConstraints="NO" id="pNc-uE-fBg">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="Stairway" translatesAutoresizingMaskIntoConstraints="NO" id="pNc-uE-fBg">
                                 <rect key="frame" x="115" y="52" width="148" height="79"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" secondItem="pNc-uE-fBg" secondAttribute="height" multiplier="15:8" id="Pl5-ci-9fG"/>
-                                    <constraint firstAttribute="width" secondItem="pNc-uE-fBg" secondAttribute="height" multiplier="148:79" id="uVZ-i6-Obf"/>
-                                </constraints>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Supermarket" translatesAutoresizingMaskIntoConstraints="NO" id="FWm-Mu-Zqw">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="Supermarket" translatesAutoresizingMaskIntoConstraints="NO" id="FWm-Mu-Zqw">
                                 <rect key="frame" x="80" y="506" width="218" height="66"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" secondItem="FWm-Mu-Zqw" secondAttribute="height" multiplier="109:33" id="M9X-nv-t5a"/>
-                                </constraints>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
                         </subviews>
                         <color key="backgroundColor" red="0.31127257407482994" green="0.87480007693673478" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                        <constraints>
-                            <constraint firstItem="i2c-aZ-o7l" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="45F-Jb-Ypr"/>
-                            <constraint firstItem="i2c-aZ-o7l" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="9gq-Qq-yWl"/>
-                            <constraint firstItem="pNc-uE-fBg" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="99" id="HfU-Mu-2cK"/>
-                            <constraint firstItem="pNc-uE-fBg" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" constant="1.5" id="aFh-aU-DXt"/>
-                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="FWm-Mu-Zqw" secondAttribute="bottom" constant="95" id="e3r-le-0Wi"/>
-                            <constraint firstItem="pNc-uE-fBg" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="32" id="hO9-1i-C08"/>
-                            <constraint firstItem="FWm-Mu-Zqw" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="64" id="qBw-LE-L7p"/>
-                            <constraint firstItem="FWm-Mu-Zqw" firstAttribute="top" secondItem="i2c-aZ-o7l" secondAttribute="bottom" constant="97" id="shA-1n-fdY"/>
-                            <constraint firstItem="FWm-Mu-Zqw" firstAttribute="centerX" secondItem="pNc-uE-fBg" secondAttribute="centerX" id="uR1-au-xhI"/>
-                        </constraints>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
@@ -168,7 +149,7 @@
     </scenes>
     <resources>
         <image name="Rock" width="567" height="768"/>
-        <image name="SaveBtn" width="76" height="76"/>
+        <image name="SaveBtn" width="768" height="768"/>
         <image name="Stairway" width="768" height="391"/>
         <image name="Supermarket" width="768" height="232"/>
         <image name="cross" width="40" height="40"/>

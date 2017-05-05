@@ -2,7 +2,9 @@
 //  QRScannerController.swift
 //  QRCodeReader
 //
-//  Based on code by Simon Ng, AppCoda
+//  Steffo
+//  Based on code by Simon Ng, AppCoda (thanks Simon!)
+//
 //  Copyright © 2017 zimt.io. All rights reserved.
 //
 
@@ -28,6 +30,8 @@ class QRScannerController: UIViewController, AVCaptureMetadataOutputObjectsDeleg
     private var timer: Timer?
     var scanningActive = true
     
+    let alertController = UIAlertController(title: "Login", message: "Login is via ForgeRock push. Make sure you registered your device.", preferredStyle: .alert)
+    
     let supportedCodeTypes = [AVMetadataObjectTypeUPCECode,
                         AVMetadataObjectTypeCode39Code,
                         AVMetadataObjectTypeCode39Mod43Code,
@@ -39,10 +43,14 @@ class QRScannerController: UIViewController, AVCaptureMetadataOutputObjectsDeleg
                         AVMetadataObjectTypePDF417Code,
                         AVMetadataObjectTypeQRCode]
     
+    
+   
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Get an instance of the AVCaptureDevice class to initialize a device object and provide the video as the media type parameter.
+        //login()
         let captureDevice = AVCaptureDevice.defaultDevice(withMediaType: AVMediaTypeVideo)
         EnterCode.isHidden = true
         do {
@@ -92,7 +100,9 @@ class QRScannerController: UIViewController, AVCaptureMetadataOutputObjectsDeleg
             print(error)
             return
         }
+        
     }
+
     
     override func viewDidAppear(_ animated: Bool) {
         GotFocusIcn.isHidden = true;
@@ -111,6 +121,17 @@ class QRScannerController: UIViewController, AVCaptureMetadataOutputObjectsDeleg
         displayLabel(msg: "Next customer: scan loyalty card.")
         //session.add(uid: emmaUID!, ean: scannedEAN!)
     }
+    
+    func login() {
+        let loginAction = UIAlertAction(title: "Login", style: .default) { [weak alertController] _ in
+            if let alertController = alertController {
+                let loginTextField = alertController.textFields![0] as UITextField
+                Identity.pushLogin(username: loginTextField.text!)
+            }
+        }
+        loginAction.isEnabled = false
+    }
+
     
     func displayLabel(msg: String){
         messageLabel.text = msg
