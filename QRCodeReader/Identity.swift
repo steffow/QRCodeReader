@@ -24,6 +24,7 @@ class Identity {
     static let openAMPushAuthURL = openAMBaseURL + "/json/authenticate?authIndexType=service&authIndexValue=pushAuth"
     
     static var tokenId: String?
+    static var oidcToken: String?
     static var accessToken: String?
     
     private static var timer: Timer?
@@ -78,7 +79,8 @@ class Identity {
                     TokenStore.tokenIdScanner = tokenId!
                     self.timer?.invalidate()
                     if refreshOAuthAccessTkn {
-                        self.getOAuthToken()
+                        //self.getOAuthToken()
+                        self.getOIDCToken(clientCredential: tokenId!)
                     }
                 } else {
                     //self.pushPoll(response: resp, duration: 4)
@@ -157,9 +159,60 @@ class Identity {
         
     }
     
+    
+    
     // ------------------------------
     //
-    // Let's check if there is an active user 
+    // OIDC Section
+    //
+    // ------------------------------
+    
+    static func getOIDCToken(clientCredential: String){
+        var headers: HTTPHeaders = [
+            "Content-Type": "application/x-www-form-urlencoded"
+        ]
+        
+        let iPlanetDirectoryPro = [
+            HTTPCookiePropertyKey.name: "iPlanetDirectoryPro",
+            HTTPCookiePropertyKey.value: clientCredential,
+            HTTPCookiePropertyKey.domain: ".zimt.io",
+            HTTPCookiePropertyKey.path: "/"
+        ]
+        
+        let iPlanetDirectoryProCookie = HTTPCookie.init(properties: iPlanetDirectoryPro)
+        Alamofire.SessionManager.default.session.configuration.httpCookieStorage?.setCookie(iPlanetDirectoryProCookie!)
+        
+        let parameters: Parameters = [
+            "grant_type": "client_credentials"
+            ]
+        
+        print("Getting OIDC Token for: " + Identity.username!)
+        if let authorizationHeader = Request.authorizationHeader(user: Identity.OAuthClientId, password: Identity.OAuthClientSecret) {
+            headers[authorizationHeader.key] = authorizationHeader.value
+            print("Headers: " + headers.description)
+        }
+        
+        Alamofire.request(Identity.openAMOauth2AccesstokenURL, method: .post, parameters: parameters, headers: headers)
+            .responseJSON { response in
+                switch response.result {
+                case .success:
+                    let jsonAuthResp = response.result.value
+                    let resp = JSON(jsonAuthResp!)
+                    let token = resp["id_token"].stringValue
+                    Identity.oidcToken = token
+                    print("OIDCTkn: " + jsonAuthResp.debugDescription)
+                case .failure(let error):
+                    NSLog("GET Error: \(error)")
+                }
+        }
+        
+        
+    }
+
+    
+    // ------------------------------
+    //
+    // Let's check if there is an active user
     // with that QR code URL
     //
     // ------------------------------
