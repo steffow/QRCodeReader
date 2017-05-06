@@ -18,7 +18,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
         //Identity.pushLogin(username: Identity.username)
         //Identity.getTokenID()
-        Identity.getOAuthToken()
+        //Identity.getOAuthToken()
         return true
     }
 

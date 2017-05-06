@@ -97,9 +97,10 @@ class Identity {
         }
     }
     
-    static func pushLogin(username: String) {
+    static func pushLogin(login: String) {
+        username = login
         let headers: HTTPHeaders = [
-            "X-OpenAM-Username": username,
+            "X-OpenAM-Username": login,
             "Content-Type": "application/json",
             "Accept-API-Version": "resource=2.0, protocol=1.0"
         ]
@@ -130,10 +131,10 @@ class Identity {
                 "scope": "uid",
                 "grant_type": "password",
                 "response_type": "token",
-                "username": Identity.username,
+                "username": Identity.username!,
                 "password": Identity.password,
                 ]
-            
+            print("Getting OAuth Token for: " + Identity.username!)
             if let authorizationHeader = Request.authorizationHeader(user: Identity.OAuthClientId, password: Identity.OAuthClientSecret) {
                 headers[authorizationHeader.key] = authorizationHeader.value
                 print("Headers: " + headers.description)
@@ -147,7 +148,7 @@ class Identity {
                         let resp = JSON(jsonAuthResp!)
                         let token = resp["access_token"].stringValue
                         Identity.accessToken = token
-                        print("AccTkn: " + token)
+                        print("AccTkn: " + jsonAuthResp.debugDescription)
                     case .failure(let error):
                         NSLog("GET Error: \(error)")
                     }

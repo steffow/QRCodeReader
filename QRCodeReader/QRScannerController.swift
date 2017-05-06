@@ -122,16 +122,6 @@ class QRScannerController: UIViewController, AVCaptureMetadataOutputObjectsDeleg
         //session.add(uid: emmaUID!, ean: scannedEAN!)
     }
     
-    func login() {
-        let loginAction = UIAlertAction(title: "Login", style: .default) { [weak alertController] _ in
-            if let alertController = alertController {
-                let loginTextField = alertController.textFields![0] as UITextField
-                Identity.pushLogin(username: loginTextField.text!)
-            }
-        }
-        loginAction.isEnabled = false
-    }
-
     
     func displayLabel(msg: String){
         messageLabel.text = msg

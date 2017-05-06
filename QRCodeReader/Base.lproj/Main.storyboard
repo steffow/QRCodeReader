@@ -7,6 +7,7 @@
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -22,26 +23,49 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="i2c-aZ-o7l">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="i2c-aZ-o7l">
                                 <rect key="frame" x="113" y="259" width="150" height="150"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="i2c-aZ-o7l" secondAttribute="height" multiplier="1:1" id="4Oo-tg-8gk"/>
+                                </constraints>
                                 <color key="tintColor" red="0.63921568627450975" green="0.14901960784313725" blue="0.8666666666666667" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 <state key="normal" image="focus"/>
                                 <connections>
                                     <segue destination="B0K-bi-dGX" kind="presentation" id="UT3-hf-w8E"/>
                                 </connections>
                             </button>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="Stairway" translatesAutoresizingMaskIntoConstraints="NO" id="pNc-uE-fBg">
-                                <rect key="frame" x="115" y="52" width="148" height="79"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Stairway" translatesAutoresizingMaskIntoConstraints="NO" id="pNc-uE-fBg">
+                                <rect key="frame" x="102" y="46" width="172" height="92"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="pNc-uE-fBg" secondAttribute="height" multiplier="43:23" id="doU-hg-Bz5"/>
+                                </constraints>
                             </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="Supermarket" translatesAutoresizingMaskIntoConstraints="NO" id="FWm-Mu-Zqw">
-                                <rect key="frame" x="80" y="506" width="218" height="66"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OVu-Ha-AOk">
+                                <rect key="frame" x="52" y="490" width="272" height="77"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="OVu-Ha-AOk" secondAttribute="height" multiplier="272:77" id="gcc-WZ-2wH"/>
+                                </constraints>
+                                <state key="normal" title="Button" image="Supermarket"/>
+                                <connections>
+                                    <action selector="LoginCashier:" destination="BYZ-38-t0r" eventType="touchUpInside" id="9Bo-NW-Wez"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="0.31127257407482994" green="0.87480007693673478" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                        <constraints>
+                            <constraint firstItem="pNc-uE-fBg" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="FIW-CV-xcu"/>
+                            <constraint firstItem="OVu-Ha-AOk" firstAttribute="top" secondItem="i2c-aZ-o7l" secondAttribute="bottom" constant="81" id="NRS-Pp-ztd"/>
+                            <constraint firstItem="pNc-uE-fBg" firstAttribute="centerX" secondItem="i2c-aZ-o7l" secondAttribute="centerX" id="OT0-eI-kyu"/>
+                            <constraint firstItem="OVu-Ha-AOk" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="36" id="S71-b4-KOs"/>
+                            <constraint firstItem="pNc-uE-fBg" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="86" id="d9j-wN-srP"/>
+                            <constraint firstItem="i2c-aZ-o7l" firstAttribute="centerX" secondItem="OVu-Ha-AOk" secondAttribute="centerX" id="iKg-Ip-14F"/>
+                            <constraint firstItem="pNc-uE-fBg" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="26" id="pVW-Ur-aSv"/>
+                            <constraint firstItem="i2c-aZ-o7l" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="xtf-Iz-95i"/>
+                        </constraints>
                     </view>
+                    <connections>
+                        <outlet property="SetCashierBtn" destination="OVu-Ha-AOk" id="KCG-nd-f9l"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
