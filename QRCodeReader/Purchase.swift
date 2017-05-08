@@ -82,7 +82,8 @@ class Purchase {
             let headers: HTTPHeaders = [
                 "Authorization": "Bearer " + Identity.accessToken!,
                 //"Accept": "application/json",
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                "id_token": Identity.oidcToken!
             ]
         
         Alamofire.request(url, method: .post, parameters: purchase, encoding: JSONEncoding.default, headers: headers)
