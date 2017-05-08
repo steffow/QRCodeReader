@@ -11,9 +11,12 @@ import UIKit
 class QRCodeViewController: UIViewController {
     @IBOutlet weak var SetCashierBtn: UIButton!
     
+    @IBOutlet weak var startScanBtn: UIButton!
+    
     override func viewDidLoad() {
         
         super.viewDidLoad()
+        startScanBtn.isHidden = true
         
 
         // Do any additional setup after loading the view.
@@ -24,6 +27,14 @@ class QRCodeViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    func hideStartScanBtn(result: Bool) {
+        if result {
+            startScanBtn.isHidden = false
+        } else {
+            startScanBtn.isHidden = true
+        }
+        
+    }
 
     
     // MARK: - Navigation
@@ -50,7 +61,7 @@ class QRCodeViewController: UIViewController {
         let loginAction = UIAlertAction(title: "Login", style: UIAlertActionStyle.default, handler: {
                 alert -> Void in
                     let loginTextField = alertController.textFields![0] as UITextField
-                    Identity.pushLogin(login: loginTextField.text!)
+                    Identity.pushLogin(login: loginTextField.text!, completion: self.hideStartScanBtn)
                     print("Login: " + loginTextField.text!)
                 })
 

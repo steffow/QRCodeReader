@@ -65,6 +65,7 @@
                     </view>
                     <connections>
                         <outlet property="SetCashierBtn" destination="OVu-Ha-AOk" id="KCG-nd-f9l"/>
+                        <outlet property="startScanBtn" destination="i2c-aZ-o7l" id="Qbd-DL-LQr"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>

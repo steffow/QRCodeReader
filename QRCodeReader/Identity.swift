@@ -60,7 +60,7 @@ class Identity {
     //
     // ------------------------------
     
-    static func sendPollRequest(response: JSON, refreshOAuthAccessTkn: Bool) {
+    static func sendPollRequest(response: JSON, refreshOAuthAccessTkn: Bool, completion: @escaping (_ result: Bool)->()) {
         let params = response.dictionaryObject
         
         let headers: HTTPHeaders = [
@@ -80,7 +80,7 @@ class Identity {
                     self.timer?.invalidate()
                     if refreshOAuthAccessTkn {
                         //self.getOAuthToken()
-                        self.getOIDCToken(clientCredential: tokenId!)
+                        self.getOIDCToken(clientCredential: tokenId!, completion: completion)
                     }
                 } else {
                     //self.pushPoll(response: resp, duration: 4)
@@ -92,14 +92,14 @@ class Identity {
         }
     }
     
-    static func pushPoll(response: JSON, duration: Int) {
+    static func pushPoll(response: JSON, duration: Int, completion: @escaping (_ result: Bool)->()) {
         print("Dispatching")
         self.timer = Timer.scheduledTimer(withTimeInterval: 3, repeats: true) { timer in
-            Identity.sendPollRequest(response: response, refreshOAuthAccessTkn: true)
+            Identity.sendPollRequest(response: response, refreshOAuthAccessTkn: true, completion: completion)
         }
     }
     
-    static func pushLogin(login: String) {
+    static func pushLogin(login: String, completion: @escaping (_ result: Bool)->() ) {
         username = login
         let headers: HTTPHeaders = [
             "X-OpenAM-Username": login,
@@ -112,7 +112,7 @@ class Identity {
             case .success:
                 let jsonAuthResp = response.result.value
                 let resp = JSON(jsonAuthResp!)
-                self.pushPoll(response: resp, duration: 3)
+                self.pushPoll(response: resp, duration: 3, completion: completion)
             case .failure(let error):
                 NSLog("GET Error: \(error)")
             }
@@ -167,7 +167,7 @@ class Identity {
     //
     // ------------------------------
     
-    static func getOIDCToken(clientCredential: String){
+    static func getOIDCToken(clientCredential: String, completion: @escaping (_ result: Bool)->()){
         var headers: HTTPHeaders = [
             "Content-Type": "application/x-www-form-urlencoded"
         ]
@@ -198,9 +198,12 @@ class Identity {
                 case .success:
                     let jsonAuthResp = response.result.value
                     let resp = JSON(jsonAuthResp!)
-                    let token = resp["id_token"].stringValue
-                    Identity.oidcToken = token
+                    let id_token = resp["id_token"].stringValue
+                    let token = resp["access_token"].stringValue
+                    Identity.accessToken = token
+                    Identity.oidcToken = id_token
                     print("OIDCTkn: " + jsonAuthResp.debugDescription)
+                    completion(true)
                 case .failure(let error):
                     NSLog("GET Error: \(error)")
                 }
